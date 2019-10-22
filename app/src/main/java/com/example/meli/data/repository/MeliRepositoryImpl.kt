@@ -7,9 +7,9 @@ import com.example.meli.data.network.responseClasses.ResultProduct
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SearchProductRepositoryImpl(
+class MeliRepositoryImpl(
     private val productResponseDataSource: ProductResponseDataSource
-) : SearchProductRepository {
+) : MeliRepository {
 
     private val _resultProduct = MutableLiveData<ResultProduct>()
 
