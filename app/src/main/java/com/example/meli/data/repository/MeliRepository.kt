@@ -4,5 +4,5 @@ import androidx.lifecycle.LiveData
 import com.example.meli.data.network.responseClasses.ResultProduct
 
 interface MeliRepository {
-    suspend fun searchProduct(): LiveData<ResultProduct>
+    suspend fun searchProduct(product: String): LiveData<ResultProduct>
 }

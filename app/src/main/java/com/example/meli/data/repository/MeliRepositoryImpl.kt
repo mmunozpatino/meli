@@ -18,18 +18,18 @@ class MeliRepositoryImpl(
             _resultProduct.postValue(newSearchResult)
         }
     }
-    override suspend fun searchProduct(): LiveData<ResultProduct> {
+    override suspend fun searchProduct(product: String): LiveData<ResultProduct> {
         return withContext(Dispatchers.IO){
-            initResultData()
+            initResultData(product)
             return@withContext _resultProduct
         }
     }
 
-    private suspend fun initResultData(){
-        fetchProductResult()
+    private suspend fun initResultData(product: String){
+        fetchProductResult(product)
     }
 
-    private suspend fun fetchProductResult(){
-        productResponseDataSource.fetchSearchResponse("moto g6")
+    private suspend fun fetchProductResult(product: String){
+        productResponseDataSource.fetchSearchResponse(product)
     }
 }
