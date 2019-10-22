@@ -1,4 +1,4 @@
-package com.example.meli.ui.serach
+package com.example.meli.ui.search
 
 import androidx.lifecycle.ViewModel;
 
