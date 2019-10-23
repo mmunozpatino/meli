@@ -87,13 +87,13 @@ class SearchFragment : ScopedFragment(), KodeinAware {
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
 //                Log.i("mechi", "on text submit")
-//                viewModel._query.postValue(query!!)
-//                searchItem.collapseActionView()
-//                bindUI()
-                Log.i("mechi", "current -> " +Navigation.findNavController(view!!).currentDestination?.id)
-                if (Navigation.findNavController(view!!).currentDestination?.id == R.id.searchFragment) {
-                    Navigation.findNavController(view!!).navigate(R.id.result_fragment)
-                }
+                viewModel._query.postValue(query!!)
+                searchItem.collapseActionView()
+                bindUI()
+//                Log.i("mechi", "current -> " +Navigation.findNavController(view!!).currentDestination?.id)
+//                if (Navigation.findNavController(view!!).currentDestination?.id == R.id.searchFragment) {
+//                    Navigation.findNavController(view!!).navigate(R.id.result_fragment)
+//                }
 //                Navigation.findNavController(view!!).navigate(R.id.result_fragment)
                 return true
             }
