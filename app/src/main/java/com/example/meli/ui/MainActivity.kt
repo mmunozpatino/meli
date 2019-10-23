@@ -42,39 +42,38 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        val inflater = menuInflater
-        inflater.inflate(R.menu.main_menu, menu)
-
-        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchItem = menu?.findItem(R.id.search)!!
-
-        val searchView = searchItem.actionView as SearchView
-
-
-
-        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
-
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.i("mechi", "on text submit")
-                searchItem.collapseActionView()
-                searchProduct(query!!)
-
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                Log.i("mechi", "on text change")
-                return false
-            }
-
-
-        })
-
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.main_menu, menu)
+//
+//        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        searchItem = menu?.findItem(R.id.search)!!
+//
+//        val searchView = searchItem.actionView as SearchView
+//
+//
+//
+//        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
+//
+//        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                Log.i("mechi", "on text submit")
+////                searchItem.collapseActionView()
+//                searchProduct(query!!)
+//
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                return false
+//            }
+//
+//
+//        })
+//
+//        return true
+//    }
 
 
     fun search(){
@@ -82,7 +81,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     }
 
     fun searchProduct(query: String)= GlobalScope.launch {
-        viewModel.search(query)
+        Log.i("mechi", "query on activity -> "+ query)
+        viewModel._query.postValue(query)
     }
 }
 

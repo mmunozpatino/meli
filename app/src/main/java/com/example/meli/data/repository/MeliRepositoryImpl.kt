@@ -1,5 +1,6 @@
 package com.example.meli.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.meli.data.network.ProductResponseDataSource
@@ -19,6 +20,7 @@ class MeliRepositoryImpl(
         }
     }
     override suspend fun searchProduct(product: String): LiveData<ResultProduct> {
+        Log.i("mechi" ,"search --> " + product)
         return withContext(Dispatchers.IO){
             initResultData(product)
             return@withContext _resultProduct
