@@ -5,5 +5,9 @@
             app:startDestination="@id/searchFragment">
 
     <fragment android:id="@+id/searchFragment" android:name="com.example.meli.ui.search.SearchFragment"
-              android:label="search_fragment" tools:layout="@layout/search_fragment"/>
+              android:label="search_fragment" tools:layout="@layout/search_fragment">
+        <action android:id="@+id/action_searchFragment_to_resultFragment"/>
+    </fragment>
+    <fragment android:id="@+id/resultFragment" android:name="com.example.meli.ui.Result.ResultFragment"
+              android:label="fragment_result" tools:layout="@layout/fragment_result"/>
 </navigation>

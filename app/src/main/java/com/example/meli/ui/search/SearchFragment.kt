@@ -13,11 +13,17 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 
 
 import com.example.meli.R
+import com.example.meli.data.network.responseClasses.Result
 import com.example.meli.ui.MainActivity
+import com.example.meli.ui.adapters.ResultAdapter
 import com.example.meli.ui.base.ScopedFragment
 import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.Kodein
@@ -35,6 +41,10 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 
     private lateinit var textView: TextView
 
+    private lateinit var resultListView: RecyclerView
+
+    private lateinit var resultListAdapter: ResultAdapter
+
     companion object {
         fun newInstance() = SearchFragment()
     }
@@ -46,7 +56,10 @@ class SearchFragment : ScopedFragment(), KodeinAware {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
-        textView = view.findViewById(R.id.result)
+        resultListView = view.findViewById(R.id.result_list)
+//        resultListView.layoutManager = LinearLayoutManager(activity)
+
+
         setHasOptionsMenu(true)
         return view
     }
@@ -73,10 +86,15 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.i("mechi", "on text submit")
-                viewModel._query.postValue(query!!)
-                searchItem.collapseActionView()
-                bindUI()
+//                Log.i("mechi", "on text submit")
+//                viewModel._query.postValue(query!!)
+//                searchItem.collapseActionView()
+//                bindUI()
+                Log.i("mechi", "current -> " +Navigation.findNavController(view!!).currentDestination?.id)
+                if (Navigation.findNavController(view!!).currentDestination?.id == R.id.searchFragment) {
+                    Navigation.findNavController(view!!).navigate(R.id.result_fragment)
+                }
+//                Navigation.findNavController(view!!).navigate(R.id.result_fragment)
                 return true
             }
 
@@ -97,8 +115,20 @@ class SearchFragment : ScopedFragment(), KodeinAware {
          response.observe(this@SearchFragment, Observer{
              if(it == null) return@Observer
 
-             textView.text = it.toString()
+//             textView.text = it.toString()
+             createResultList(it.results as ArrayList<Result>)
          })
+
+    }
+
+    fun createResultList(list: ArrayList<Result>){
+
+        Log.i("mechi", "create list")
+        resultListAdapter = ResultAdapter(list, activity!!.applicationContext)
+        resultListView.apply {
+            layoutManager= LinearLayoutManager(activity)
+            adapter= resultListAdapter
+        }
     }
 
 }

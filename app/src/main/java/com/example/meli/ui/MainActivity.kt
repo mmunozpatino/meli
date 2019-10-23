@@ -22,6 +22,10 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import android.os.StrictMode
+
+
+
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
@@ -36,9 +40,11 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(com.example.meli.R.layout.activity_main)
         setSupportActionBar(toolbar)
         viewModel = ViewModelProviders.of(this, searchProductViewModelFactory).get(SearchViewModel::class.java)
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
     }
 
@@ -56,7 +62,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 //
 //        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
 //
-//        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+//        searchView.setOnQueryTextL
+// istener(object: SearchView.OnQueryTextListener{
 //            override fun onQueryTextSubmit(query: String?): Boolean {
 //                Log.i("mechi", "on text submit")
 ////                searchItem.collapseActionView()
