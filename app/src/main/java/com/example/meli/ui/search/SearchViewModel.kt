@@ -17,10 +17,9 @@ class SearchViewModel(
 
     val _query= MutableLiveData<String>()
 
-    val query : LiveData<String>
-        get() = _query
+    var q: String = ""
 
     val result by lazyDeferred{
-        meliRepository.searchProduct(_query.value!!)
+        meliRepository.searchProduct(q)
     }
 }

@@ -6,6 +6,8 @@ import com.example.meli.data.network.ProductResponseDataSource
 import com.example.meli.data.network.ProductResponseDataSourceImpl
 import com.example.meli.data.repository.MeliRepository
 import com.example.meli.data.repository.MeliRepositoryImpl
+import com.example.meli.ui.Result.ResultFragmentViewModelFactory
+import com.example.meli.ui.SharedViewModelFactory
 import com.example.meli.ui.search.SearchProductViewModelFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
@@ -30,6 +32,8 @@ class Meli: Application(), KodeinAware{
             MeliRepositoryImpl(instance())
         }
         bind() from provider { SearchProductViewModelFactory(instance())}
+        bind() from provider { ResultFragmentViewModelFactory() }
+        bind() from provider { SharedViewModelFactory() }
     }
 
     override fun onCreate() {

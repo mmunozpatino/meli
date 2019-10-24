@@ -6,15 +6,10 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
@@ -22,10 +17,12 @@ import kotlinx.coroutines.launch
 
 import com.example.meli.R
 import com.example.meli.data.network.responseClasses.Result
-import com.example.meli.ui.MainActivity
+import com.example.meli.ui.Result.ResultFragmentViewModel
+import com.example.meli.ui.Result.ResultFragmentViewModelFactory
+import com.example.meli.ui.SharedViewModel
+import com.example.meli.ui.SharedViewModelFactory
 import com.example.meli.ui.adapters.ResultAdapter
 import com.example.meli.ui.base.ScopedFragment
-import kotlinx.coroutines.CoroutineScope
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
@@ -39,11 +36,14 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 
     private val searchProductViewModelFactory: SearchProductViewModelFactory by instance()
 
-    private lateinit var textView: TextView
 
-    private lateinit var resultListView: RecyclerView
+    private val sharedViewModelFactory: SharedViewModelFactory by instance()
 
-    private lateinit var resultListAdapter: ResultAdapter
+    lateinit var sharedViewModel: SharedViewModel
+
+//    private lateinit var resultListView: RecyclerView
+//
+//    private lateinit var resultListAdapter: ResultAdapter
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -56,9 +56,8 @@ class SearchFragment : ScopedFragment(), KodeinAware {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
-        resultListView = view.findViewById(R.id.result_list)
+//        resultListView = view.findViewById(R.id.result_list)
 //        resultListView.layoutManager = LinearLayoutManager(activity)
-
 
         setHasOptionsMenu(true)
         return view
@@ -66,7 +65,10 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, searchProductViewModelFactory).get(SearchViewModel::class.java)
+        viewModel = ViewModelProviders.of(
+            activity!!, searchProductViewModelFactory).get(SearchViewModel::class.java)
+
+        sharedViewModel= ViewModelProviders.of(activity!!, sharedViewModelFactory).get(SharedViewModel::class.java)
 //        bindUI()
     }
 
@@ -89,12 +91,8 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 //                Log.i("mechi", "on text submit")
                 viewModel._query.postValue(query!!)
                 searchItem.collapseActionView()
-                bindUI()
-//                Log.i("mechi", "current -> " +Navigation.findNavController(view!!).currentDestination?.id)
-//                if (Navigation.findNavController(view!!).currentDestination?.id == R.id.searchFragment) {
-//                    Navigation.findNavController(view!!).navigate(R.id.result_fragment)
-//                }
-//                Navigation.findNavController(view!!).navigate(R.id.result_fragment)
+                search(query)
+
                 return true
             }
 
@@ -110,25 +108,22 @@ class SearchFragment : ScopedFragment(), KodeinAware {
     }
 
 
-     fun bindUI()= launch {
+     fun search(query: String)= launch{
+
+         viewModel.q = query
+
          val response = viewModel.result.await()
          response.observe(this@SearchFragment, Observer{
+             Log.i("mechi" , "observe search " +it.results.get(0).price)
              if(it == null) return@Observer
 
-//             textView.text = it.toString()
-             createResultList(it.results as ArrayList<Result>)
+             sharedViewModel._results.value = it.results as ArrayList<Result>
+             if (Navigation.findNavController(view!!).currentDestination?.id == R.id.search_fragment) {
+                 Navigation.findNavController(view!!).navigate(R.id.next_action)
+             }
          })
 
     }
 
-    fun createResultList(list: ArrayList<Result>){
-
-        Log.i("mechi", "create list")
-        resultListAdapter = ResultAdapter(list, activity!!.applicationContext)
-        resultListView.apply {
-            layoutManager= LinearLayoutManager(activity)
-            adapter= resultListAdapter
-        }
-    }
 
 }
