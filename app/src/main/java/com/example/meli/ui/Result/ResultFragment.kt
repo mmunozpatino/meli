@@ -33,9 +33,6 @@ class ResultFragment : ScopedFragment(), KodeinAware {
 
     private val sharedFragmentViewModelFactory: SharedViewModelFactory by instance()
 
-    private lateinit var resultText: TextView
-
-
     private lateinit var resultListView: RecyclerView
 
     private lateinit var resultListAdapter: ResultAdapter

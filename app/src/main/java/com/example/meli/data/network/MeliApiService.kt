@@ -10,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-
-//  https://api.mercadolibre.com/sites/MLA/search?q=Motorola%20G6
 interface MeliApiService {
 
     @GET("search")

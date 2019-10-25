@@ -28,7 +28,7 @@ class ProductResponseDataSourceImpl(
             _downloadedSearchResult.postValue(fetchedSearchResult)
 
         }catch(e: NoConnectivityExeption){
-            Log.e("mechi", "No internet connection", e)
+            Log.e("connectivity", "No internet connection", e)
 
         }
     }

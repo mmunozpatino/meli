@@ -35,7 +35,6 @@ class ResultAdapter (
     override fun onBindViewHolder(holder: ResultAdapter.ViewHolder, position: Int) {
         holder.title!!.text = items.get(position).title
         holder.price!!.text = "$" + items.get(position).price.toString()
-//        var input: InputStream = URL(items.get(position).thumbnail).openConnection().getInputStream()
 
         Picasso.with(context).setLoggingEnabled(true)
         Picasso.with(context).load(items.get(position).thumbnail).into(holder.image)

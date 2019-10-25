@@ -6,24 +6,18 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 
 
 import com.example.meli.R
 import com.example.meli.data.network.responseClasses.Result
-import com.example.meli.ui.Result.ResultFragmentViewModel
-import com.example.meli.ui.Result.ResultFragmentViewModelFactory
 import com.example.meli.ui.SharedViewModel
 import com.example.meli.ui.SharedViewModelFactory
-import com.example.meli.ui.adapters.ResultAdapter
 import com.example.meli.ui.base.ScopedFragment
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -49,9 +43,6 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
 
     lateinit var body: RelativeLayout
 
-//    private lateinit var resultListView: RecyclerView
-//
-//    private lateinit var resultListAdapter: ResultAdapter
 
     companion object {
         fun newInstance() = SearchFragment()
@@ -64,8 +55,6 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
-//        resultListView = view.findViewById(R.id.result_list)
-//        resultListView.layoutManager = LinearLayoutManager(activity)
         body = view.findViewById(R.id.body)
         searchButton = view.findViewById(R.id.search_btn)
         searchButton.setOnClickListener(this)
@@ -85,7 +74,6 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.i("mechi", "on create menu")
         val inflater = activity!!.menuInflater
         inflater.inflate(R.menu.main_menu, menu)
 
