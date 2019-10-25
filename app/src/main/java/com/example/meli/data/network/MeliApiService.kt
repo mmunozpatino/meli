@@ -24,23 +24,8 @@ interface MeliApiService {
             connectivityInterceptor: ConnectivityInterceptor
         ): MeliApiService{
 
-            val requestInterceptor = Interceptor { chain ->
-
-                val url = chain.request()
-                    .url()
-                    .newBuilder()
-                    .build()
-
-                val request =  chain.request()
-                    .newBuilder()
-                    .url(url)
-                    .build()
-
-                return@Interceptor chain.proceed(request)
-            }
-
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()

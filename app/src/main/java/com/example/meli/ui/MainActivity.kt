@@ -2,6 +2,8 @@ package com.example.meli.ui
 
 import android.app.SearchManager
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,8 +33,6 @@ import androidx.navigation.ui.setupWithNavController
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
-    lateinit var searchItem: MenuItem
-
     override val kodein: Kodein by closestKodein()
 
     private val searchProductViewModelFactory: SearchProductViewModelFactory by instance()
@@ -54,54 +54,13 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 
         NavigationUI.setupActionBarWithNavController(this, navController)
 
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, null)
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//
-//        val inflater = menuInflater
-//        inflater.inflate(R.menu.main_menu, menu)
-//
-//        val manager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-//        searchItem = menu?.findItem(R.id.search)!!
-//
-//        val searchView = searchItem.actionView as SearchView
-//
-//
-//
-//        searchView.setSearchableInfo(manager.getSearchableInfo(componentName))
-//
-//        searchView.setOnQueryTextL
-// istener(object: SearchView.OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                Log.i("mechi", "on text submit")
-////                searchItem.collapseActionView()
-//                searchProduct(query!!)
-//
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                return false
-//            }
-//
-//
-//        })
-//
-//        return true
-//    }
 
-
-    fun search(){
-        searchItem.expandActionView()
-    }
-
-    fun searchProduct(query: String)= GlobalScope.launch {
-        Log.i("mechi", "query on activity -> "+ query)
-        viewModel._query.postValue(query)
-    }
 }
 

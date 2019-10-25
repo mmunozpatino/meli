@@ -2,14 +2,13 @@ package com.example.meli.ui.search
 
 import android.app.SearchManager
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -95,8 +94,6 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
 
         val searchView = searchItem.actionView as SearchView
 
-
-
         searchView.setSearchableInfo(manager.getSearchableInfo(activity!!.componentName))
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
@@ -111,8 +108,6 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
-
-
         })
 
         super.onCreateOptionsMenu(menu, inflater)
@@ -128,20 +123,29 @@ class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
     }
 
      fun search(query: String)= launch{
+         if(checkConnection()){
+             viewModel.q = query
 
-         viewModel.q = query
+             progressBar.visibility = View.VISIBLE
+             body.visibility = View.GONE
 
-         progressBar.visibility = View.VISIBLE
-         body.visibility = View.GONE
+             viewModel.search().observe(this@SearchFragment, Observer {
+                 sharedViewModel._results.value = it.results as ArrayList<Result>
 
-         viewModel.search().observe(this@SearchFragment, Observer {
-             sharedViewModel._results.value = it.results as ArrayList<Result>
+                 if (Navigation.findNavController(view!!).currentDestination?.id == R.id.search_fragment) {
+                     Navigation.findNavController(view!!).navigate(R.id.next_action)
+                 }
+             })
+         }else{
+             Toast.makeText(activity, "Sin conexión a internet", Toast.LENGTH_LONG).show()
+         }
 
-             if (Navigation.findNavController(view!!).currentDestination?.id == R.id.search_fragment) {
-                 Navigation.findNavController(view!!).navigate(R.id.next_action)
-             }
-         })
+    }
 
+    private fun checkConnection(): Boolean {
+        val connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return activeNetwork?.isConnected == true
     }
 
 }

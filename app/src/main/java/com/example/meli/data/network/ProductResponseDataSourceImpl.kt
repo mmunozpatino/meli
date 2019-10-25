@@ -1,11 +1,14 @@
 package com.example.meli.data.network
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.meli.data.network.responseClasses.Result
 import com.example.meli.data.network.responseClasses.ResultProduct
 import com.example.meli.internal.NoConnectivityExeption
+import kotlinx.coroutines.channels.consumesAll
+import kotlin.coroutines.coroutineContext
 
 class ProductResponseDataSourceImpl(
     private val meliApiService: MeliApiService
@@ -18,7 +21,6 @@ class ProductResponseDataSourceImpl(
 
     override suspend fun fetchSearchResponse(product: String) {
         try{
-            Log.i("mechi", "fetch!")
             val fetchedSearchResult= meliApiService
                 .searchProduct(product)
                 .await()
@@ -27,6 +29,7 @@ class ProductResponseDataSourceImpl(
 
         }catch(e: NoConnectivityExeption){
             Log.e("mechi", "No internet connection", e)
+
         }
     }
 }

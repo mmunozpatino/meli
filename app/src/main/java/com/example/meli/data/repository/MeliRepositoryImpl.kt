@@ -1,6 +1,7 @@
 package com.example.meli.data.repository
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.meli.data.network.ProductResponseDataSource
@@ -18,6 +19,7 @@ class MeliRepositoryImpl(
         productResponseDataSource.downloadedSearchResult.observeForever { newSearchResult ->
             _resultProduct.postValue(newSearchResult)
         }
+//        productResponseDataSource.error.observeForever { err -> connectionError.postValue() }
     }
     override suspend fun searchProduct(product: String): LiveData<ResultProduct> {
         Log.i("mechi" ,"search --> " + product)
