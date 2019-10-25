@@ -1,9 +1,7 @@
 package com.example.meli
 
 import android.app.Application
-import com.example.meli.data.network.MeliApiService
-import com.example.meli.data.network.ProductResponseDataSource
-import com.example.meli.data.network.ProductResponseDataSourceImpl
+import com.example.meli.data.network.*
 import com.example.meli.data.repository.MeliRepository
 import com.example.meli.data.repository.MeliRepositoryImpl
 import com.example.meli.ui.Result.ResultFragmentViewModelFactory
@@ -24,7 +22,8 @@ class Meli: Application(), KodeinAware{
     override val kodein= Kodein.lazy {
         import(androidModule(this@Meli))
 
-        bind() from singleton { MeliApiService() }
+        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
+        bind() from singleton { MeliApiService(instance()) }
         bind<ProductResponseDataSource>() with singleton {
             ProductResponseDataSourceImpl(instance())
         }

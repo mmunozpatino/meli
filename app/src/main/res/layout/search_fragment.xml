@@ -6,17 +6,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.search.SearchFragment"
+        android:background="@android:color/white"
 >
 
+        <ProgressBar
+                android:id="@+id/loading_bar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimaryDark"
+        >
+        </ProgressBar>
 
-        <!--<androidx.recyclerview.widget.RecyclerView-->
+        <RelativeLayout
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <!--android:id="@+id/result_list"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-        <!--</androidx.recyclerview.widget.RecyclerView>-->
+                <ImageView
+                        android:id="@+id/img_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="150dp"
+                        android:src="@drawable/home_logo"
+                        android:layout_marginTop="130dp"
+                />
 
+                <Button
+                        android:id="@+id/search_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Search"
+                        android:textAllCaps="false"
+                        android:layout_below="@id/img_logo"
+                        android:layout_centerHorizontal="true"
+                />
 
+        </RelativeLayout>
 
 
 

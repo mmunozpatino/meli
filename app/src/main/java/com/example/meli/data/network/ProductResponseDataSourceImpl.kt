@@ -18,6 +18,7 @@ class ProductResponseDataSourceImpl(
 
     override suspend fun fetchSearchResponse(product: String) {
         try{
+            Log.i("mechi", "fetch!")
             val fetchedSearchResult= meliApiService
                 .searchProduct(product)
                 .await()
@@ -25,7 +26,7 @@ class ProductResponseDataSourceImpl(
             _downloadedSearchResult.postValue(fetchedSearchResult)
 
         }catch(e: NoConnectivityExeption){
-            Log.e("Connectivity", "No internet connection", e)
+            Log.e("mechi", "No internet connection", e)
         }
     }
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".ui.detail.DetailFragment">
-
-        <ImageView
-                android:id="@+id/result_img"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@drawable/fake"
-                android:layout_margin="10dp"
-        />
+                android:layout_height="match_parent"
+                tools:context=".ui.detail.DetailFragment">
+
+    <ImageView
+            android:id="@+id/result_img"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:src="@drawable/fake"
+            android:layout_margin="10dp"
+    />
 
     <TextView
             android:id="@+id/tv_amount_sold"
@@ -19,15 +19,14 @@
             android:layout_height="wrap_content"
             android:text="Cantidad Vendido: 150"
             android:layout_below="@id/result_img"
-            android:layout_margin="5dp"
-    />
+            android:layout_marginTop="1dp" android:layout_marginBottom="5dp"/>
     <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
             android:textSize="25dp"
-            android:layout_below="@id/tv_amount_sold"
+            android:layout_toEndOf="@id/result_img"
             android:layout_margin="10dp"
     />
 
@@ -36,10 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$15000"
-            android:layout_below="@id/tv_title"
             android:textSize="30dp"
             android:layout_margin="5dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/result_img"
     />
 
     <TextView

@@ -16,4 +16,7 @@ class SharedViewModel: ViewModel() {
 
     val selected: LiveData<Result>
         get() = _selected
+
+    val query = MutableLiveData<String>()
+
 }

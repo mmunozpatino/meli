@@ -61,7 +61,8 @@ class ResultFragment : ScopedFragment(), KodeinAware {
         bindUI()
     }
 
-    private fun bindUI(){sharedViewModel.results.observe(this@ResultFragment, Observer {
+    private fun bindUI(){
+        sharedViewModel.results.observe(this@ResultFragment, Observer {
         createResultList(it)
         })
     }

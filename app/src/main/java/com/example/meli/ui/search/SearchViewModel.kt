@@ -1,5 +1,6 @@
 package com.example.meli.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,7 +20,8 @@ class SearchViewModel(
 
     var q: String = ""
 
-    val result by lazyDeferred{
-        meliRepository.searchProduct(q)
+
+    suspend fun search(): LiveData<ResultProduct> {
+        return meliRepository.searchProduct(q)
     }
 }

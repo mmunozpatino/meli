@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -28,7 +31,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-class SearchFragment : ScopedFragment(), KodeinAware {
+class SearchFragment : ScopedFragment(), KodeinAware, View.OnClickListener {
 
     lateinit var searchItem: MenuItem
 
@@ -40,6 +43,12 @@ class SearchFragment : ScopedFragment(), KodeinAware {
     private val sharedViewModelFactory: SharedViewModelFactory by instance()
 
     lateinit var sharedViewModel: SharedViewModel
+
+    lateinit var searchButton: Button
+
+    lateinit var progressBar: ProgressBar
+
+    lateinit var body: RelativeLayout
 
 //    private lateinit var resultListView: RecyclerView
 //
@@ -58,6 +67,11 @@ class SearchFragment : ScopedFragment(), KodeinAware {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
 //        resultListView = view.findViewById(R.id.result_list)
 //        resultListView.layoutManager = LinearLayoutManager(activity)
+        body = view.findViewById(R.id.body)
+        searchButton = view.findViewById(R.id.search_btn)
+        searchButton.setOnClickListener(this)
+        progressBar = view.findViewById(R.id.loading_bar)
+        progressBar.visibility = View.GONE
 
         setHasOptionsMenu(true)
         return view
@@ -69,7 +83,6 @@ class SearchFragment : ScopedFragment(), KodeinAware {
             activity!!, searchProductViewModelFactory).get(SearchViewModel::class.java)
 
         sharedViewModel= ViewModelProviders.of(activity!!, sharedViewModelFactory).get(SharedViewModel::class.java)
-//        bindUI()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -88,7 +101,6 @@ class SearchFragment : ScopedFragment(), KodeinAware {
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-//                Log.i("mechi", "on text submit")
                 viewModel._query.postValue(query!!)
                 searchItem.collapseActionView()
                 search(query)
@@ -104,26 +116,32 @@ class SearchFragment : ScopedFragment(), KodeinAware {
         })
 
         super.onCreateOptionsMenu(menu, inflater)
-//        return true
     }
 
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.search_btn -> {
+                searchItem.expandActionView()
+            }
+        }
+    }
 
      fun search(query: String)= launch{
 
          viewModel.q = query
 
-         val response = viewModel.result.await()
-         response.observe(this@SearchFragment, Observer{
-             Log.i("mechi" , "observe search " +it.results.get(0).price)
-             if(it == null) return@Observer
+         progressBar.visibility = View.VISIBLE
+         body.visibility = View.GONE
 
+         viewModel.search().observe(this@SearchFragment, Observer {
              sharedViewModel._results.value = it.results as ArrayList<Result>
+
              if (Navigation.findNavController(view!!).currentDestination?.id == R.id.search_fragment) {
                  Navigation.findNavController(view!!).navigate(R.id.next_action)
              }
          })
 
     }
-
 
 }
