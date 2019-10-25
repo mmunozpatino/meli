@@ -90,9 +90,11 @@ class DetailFragment : ScopedFragment(), KodeinAware {
             amountSold.text = condition + " - " + it.soldQuantity.toString() + " vendidos"
             price.text = "$ "+it.price.toString()
             stockStatus.text = stock
-            val imageUrl = it.thumbnail
-            val img = URL(imageUrl).openStream()
-            image.setImageBitmap(BitmapFactory.decodeStream(img))
+//            val imageUrl = it.thumbnail
+//            val img = URL(imageUrl).openStream()
+//            image.setImageBitmap(BitmapFactory.decodeStream(img))
+
+            Picasso.with(context).load(it.thumbnail).into(image)
         })
     }
 }
