@@ -29,7 +29,6 @@ class Meli: Application(), KodeinAware{
             MeliRepositoryImpl(instance())
         }
         bind() from provider { SearchProductViewModelFactory(instance())}
-        bind() from provider { ResultFragmentViewModelFactory() }
         bind() from provider { SharedViewModelFactory() }
     }
 
